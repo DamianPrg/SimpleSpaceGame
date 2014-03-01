@@ -17,9 +17,13 @@ public:
     void initialize();
     void draw(sf::RenderWindow* renderWindow);
     void update(float dt);
+    
+    void setShooter( std::string s ) { shooter = s; }
+    std::string getShooter() { return shooter; }
 private:
     Drawable projGfx;
     const float speed = 17.0f;
+    std::string shooter;
 };
 
 #endif /* defined(__SimpleSpaceGame__Projectile__) */

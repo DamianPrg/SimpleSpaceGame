@@ -25,9 +25,9 @@ public:
 protected:
     Drawable spaceShip, shield;
     
-    const float smooth     = 0.05f;
-    const float max_speed  = 3.5f;
-    const float speedApply = 0.4f;
+    const float smooth     = 0.03f;// default:0.05f
+    const float max_speed  = 7.0f; // default:5.0f
+    const float speedApply = 0.6f; // default:0.4f
     bool hasShield;
     
     int ammo;

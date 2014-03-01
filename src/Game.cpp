@@ -37,7 +37,7 @@ void CGame::initialize()
     gameObjects.push_back(player);
     gameObjects.push_back(meteor);
     
-    // generate meteors
+    // add meteors
     for(int i = 0; i < 20; i++)
     {
         std::shared_ptr<Meteor> m = std::make_shared<Meteor>();
@@ -45,6 +45,7 @@ void CGame::initialize()
         gameObjects.push_back(m);
     }
 
+    // add enemies
     for(int i = 0; i < 1; i++)
     {
         std::shared_ptr<Enemy> e = std::make_shared<Enemy>();
@@ -52,14 +53,14 @@ void CGame::initialize()
         gameObjects.push_back(e);
     }
     
-    addPickup(Pickup::PICKUP_TYPE::PT_AMMO, Vec2(20.0f, 20.0f));
-    
+
     backgroundMusic.loadAsMusic("Sfx/Spacecrusher_0.ogg");
     shootSound.loadAsSound("Sfx/sfx_laser1.ogg");
+    
     //backgroundMusic.playAsMusic();
 }
 
-void CGame::addProjectile(Vec2 pos, float rot)
+void CGame::addProjectile(Vec2 pos, float rot, std::string shooter)
 {
     std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
     projectile->initialize();
@@ -68,6 +69,7 @@ void CGame::addProjectile(Vec2 pos, float rot)
     
     projectile->vel().x = sin((3.14f/180.0f)*rot);
     projectile->vel().y = -cos((3.14f/180.0f)*rot);
+    projectile->setShooter(shooter);
     
     shootSound.playAsSound();
     
@@ -96,14 +98,19 @@ void CGame::update()
         }
     }
     
+    // check collision between objects
     for(int i = 0; i < gameObjects.size(); i++)
     {
         for(int j = 0; j < gameObjects.size(); j++)
         {
-            if(gameObjects[i] != gameObjects[j])
+            if(gameObjects[i] != gameObjects[j] && i != j)
             {
                 std::shared_ptr<GameObject> gA = gameObjects[i];
                 std::shared_ptr<GameObject> gB = gameObjects[j];
+                
+                // bbCollision (box-box)
+                // ppCollision (point-point)
+                // ppCollision is more precise.
                 
                 /*
                 if(bbCollision(Vec2(gA->pos().x,
@@ -115,8 +122,13 @@ void CGame::update()
                 {
                     gA->collision(gB, gA->pos());
                    // gB->collision(gA, gB->pos());
-                }
-                */
+                }*/
+                
+                
+                Vec2 pos1 = gA->pos();
+                Vec2 pos2 = gB->pos();
+                
+                
                 if(ppCollision(Vec2(gA->pos().x,
                                     gA->pos().y),
                                Vec2(gA->width(),gA->height()),
@@ -124,13 +136,15 @@ void CGame::update()
                                     gB->pos().y),
                                Vec2(gB->width(),gB->height())))
                 {
-                    gA->collision(gB, gA->pos());
-                    // gB->collision(gA, gB->pos());
+                    gA->collision(gB, pos1);
+                    //gB->collision(gA, pos2);
+                    gB->collision(gA, pos2);
                 }
             }
         }
     }
     
+    // update all game objects
     for(int i = 0; i < gameObjects.size(); i++)
     {
         gameObjects[i]->update(dt);
@@ -152,6 +166,7 @@ void CGame::draw()
         }
     }
     
+    // draw game objects
     for(int i = 0; i < gameObjects.size(); i++)
     {
         gameObjects[i]->draw(&renderWindow);

@@ -27,6 +27,9 @@
 #include "Enemy.h"
 #include <ctime>
 
+// todo: cleanup projectiles, etc..,
+//       fixes, better gameplay.
+
 class CGame
 {
 public:
@@ -39,8 +42,24 @@ public:
     sf::View& getView() { return view; }
     sf::RenderWindow& getWindow() { return renderWindow; }
     
-    void addProjectile(Vec2 pos, float rot);
+    void addProjectile(Vec2 pos, float rot, std::string shooter="unknown");
     void addPickup(Pickup::PICKUP_TYPE pt, Vec2 pos);
+    void addGameObject(std::shared_ptr<GameObject> gameObject) {
+        gameObjects.push_back(gameObject);
+    }
+    
+    // returns first object of specified name
+    std::shared_ptr<GameObject> getGameObject(std::string n) {
+        for(int i = 0; i < gameObjects.size(); i++) {
+            if(gameObjects[i]->getName() == n) {
+                return gameObjects[i];
+            }
+        }
+        
+        return gameObjects[0];
+    }
+    
+ 
 private:
     sf::RenderWindow renderWindow;
     sf::View         view;

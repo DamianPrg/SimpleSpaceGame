@@ -44,7 +44,7 @@ void Player::update(float dt)
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && is_pressed == false
        && ammo > 0)
     {
-        Game.addProjectile(pos(), rotation);
+        Game.addProjectile(pos(), rotation, getName());
         is_pressed = true;
         
         ammo--;
@@ -61,7 +61,6 @@ void Player::update(float dt)
     
     float _rot = atan2f(pos().y - convertedMP.y,
                         pos().x - convertedMP.x);
-    
     rotation = -90+(180.0f/3.14f)*_rot;
     
     if(velocity.x > max_speed) velocity.x = max_speed;
@@ -100,12 +99,6 @@ void Player::update(float dt)
 void Player::collision(std::shared_ptr<GameObject> gameObject,
                Vec2 col_pos)
 {
-    /*
-    gameObject->vel().x += vel().x*0.29;
-    gameObject->vel().y += vel().y*0.29;
-    vel().x=-vel().x*0.2;
-    vel().y=-vel().y*0.2;
-     */
     if(gameObject->getName() == "Pickup")
     {
         std::shared_ptr<Pickup> pickup = std::dynamic_pointer_cast<Pickup>(gameObject);
@@ -129,5 +122,11 @@ void Player::collision(std::shared_ptr<GameObject> gameObject,
         }
         
         gameObject->setShouldBeRemoved(true);
+    }
+    
+    if(gameObject->getName() == "Meteor")
+    {
+        pos().x = col_pos.x;
+        pos().y = col_pos.y;
     }
 }

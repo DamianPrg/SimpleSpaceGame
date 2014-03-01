@@ -15,6 +15,7 @@ void Projectile::initialize()
     name = "Projectile";
     
     shouldBeRemoved = false;
+    shooter = "Unknown";
 }
 
 void Projectile::draw(sf::RenderWindow* renderWindow)

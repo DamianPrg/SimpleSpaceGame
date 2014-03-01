@@ -75,7 +75,7 @@ void Meteor::update(float dt)
     }
     
     
-
+   // vel().clamp(-5.0f, 5.0f, -5.0f, 5.0f);
     
 }
 
@@ -106,8 +106,6 @@ void Meteor::collision(std::shared_ptr<GameObject> gameObject,
     // someone friendly on the way?
     if(gameObject->getName() == "Meteor")
     {
-       // //gameObject->pos().x = col_pos.x;
-       // gameObject->pos().y = col_pos.y;
-       // gameObject->setShouldBeRemoved(true);
+
     }
 }

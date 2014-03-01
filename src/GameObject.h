@@ -46,6 +46,7 @@ public:
     void loadAsSound(std::string filename) {
         buffer.loadFromFile(filename);
         sound.setBuffer(buffer);
+        sound.setVolume(10.0f);
       
     }
     
@@ -73,8 +74,10 @@ public:
     virtual void collision(std::shared_ptr<GameObject> gameObject,
                            Vec2 col_pos){}
     
+    // remember to overload this methods for collision support!
     virtual int  width() {return 0;}
     virtual int  height() {return 0;}
+    
     Vec2&         pos() { return position; }
     Vec2&         vel() { return velocity; }
     std::string   getName() { return name; }

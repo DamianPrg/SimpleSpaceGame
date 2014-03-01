@@ -44,7 +44,7 @@ bool  ppCollision(Vec2 ap, Vec2 as,
     
     float avg = (w+h)/2.0;
     
-    if(dist(ap, bp) < avg) {
+    if(dist(ap, bp) < avg+4.0f) {
         return true;
     }
     

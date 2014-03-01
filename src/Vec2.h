@@ -64,6 +64,15 @@ public:
         y += v.y;
     }
     
+    void clamp( float min_x, float max_x,
+               float min_y, float max_y ) {
+        if(x > max_x) x = max_x;
+        else if(x < min_x) x = min_x;
+        
+        if(y > max_y) y = max_y;
+        else if(y < max_y) y = min_y;
+    }
+    
     float x,y;
     
 protected:
