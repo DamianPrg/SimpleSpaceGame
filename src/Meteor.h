@@ -27,7 +27,7 @@ private:
     Drawable meteor;
     const std::vector<std::string> meteorGfxs = {
         "Gfx/meteorBrown_big1.png",
-        "Gfx/meteorBrown_big2.png",
+        "Gfx/meteorBrown_med1.png",//Gfx/meteorBrown_big2.png
         "Gfx/meteorBrown_med1.png",
         "Gfx/meteorBrown_med3.png",
         "Gfx/meteorBrown_small2.png",
@@ -35,8 +35,8 @@ private:
         "Gfx/meteorGrey_med1.png"
     };
     
-    const float rotSpeed = 15.0f;
-    const float speed    = 15.0f;
+    const float rotSpeed = 25.0f;
+    const float speed    = 20.0f;
 };
 
 #endif /* defined(__SimpleSpaceGame__Meteor__) */

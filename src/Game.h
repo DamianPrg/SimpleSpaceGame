@@ -24,6 +24,7 @@
 #include "Meteor.h"
 #include "Projectile.h"
 #include "Pickup.h"
+#include "Enemy.h"
 #include <ctime>
 
 class CGame
@@ -52,6 +53,7 @@ private:
     std::shared_ptr<Meteor> meteor;
     
     Drawable background;
+    Sound    backgroundMusic, shootSound;
 };
 
 extern CGame Game;

@@ -20,6 +20,16 @@ public:
     }
     Vec2(float a, float b):x(a),y(b) {}
     
+    void operator()(float _x, float _y) {
+        x = _x;
+        y = _y;
+    }
+    
+    void operator()(const Vec2& v) {
+        x = v.x;
+        y = v.y;
+    }
+    
     float length()
     {
         return sqrt(x*x+y*y);
@@ -48,6 +58,12 @@ public:
         y += _y;
     }
     
+    void move(const Vec2& v)
+    {
+        x += v.x;
+        y += v.y;
+    }
+    
     float x,y;
     
 protected:
@@ -57,5 +73,7 @@ protected:
 bool bbCollision(Vec2 ap, Vec2 as,
                  Vec2 bp, Vec2 bs);
 float dist(Vec2 a, Vec2 b);
+bool  ppCollision(Vec2 ap, Vec2 as,
+                  Vec2 bp, Vec2 bs);
 
 #endif /* defined(__SimpleSpaceGame__Vec2__) */

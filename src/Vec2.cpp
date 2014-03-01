@@ -35,3 +35,18 @@ float dist(Vec2 a, Vec2 b)
     
     return abs(t.length());
 }
+
+bool  ppCollision(Vec2 ap, Vec2 as,
+                  Vec2 bp, Vec2 bs)
+{
+    float w = (as.x*0.5)+(bs.x*0.5);
+    float h = (as.y*0.5)+(bs.y*0.5);
+    
+    float avg = (w+h)/2.0;
+    
+    if(dist(ap, bp) < avg) {
+        return true;
+    }
+    
+    return false;
+}

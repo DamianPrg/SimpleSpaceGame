@@ -51,7 +51,7 @@ void Meteor::update(float dt)
     meteor().setRotation(rotation);
 
     
-    /*
+    
     if(position.x+width()/2 > Game.getView().getCenter().x + Game.getWindow().getSize().x/2)
     {
         vel().x = -vel().x;
@@ -61,20 +61,22 @@ void Meteor::update(float dt)
     {
         vel().x = -vel().x;
     }
-     */
+     
     
-    /*
+    
     if(position.y+height()/2 > Game.getView().getCenter().y + Game.getWindow().getSize().y/2)
     {
         vel().y = -vel().y;
     }
     
-    if(position.y-height()/2 < Game.getView().getCenter().y + Game.getWindow().getSize().y/2)
+    if(position.y-height()/2 < Game.getView().getCenter().y - Game.getWindow().getSize().y/2)
     {
         vel().y = -vel().y;
     }
-     */
-     
+    
+    
+
+    
 }
 
 void Meteor::collision(std::shared_ptr<GameObject> gameObject,
@@ -86,7 +88,7 @@ void Meteor::collision(std::shared_ptr<GameObject> gameObject,
        this->setShouldBeRemoved(true);
        gameObject->setShouldBeRemoved(true);
         
-        int luckyNumber=rand()%14;
+        int luckyNumber=rand()%12;
         
         if(luckyNumber==4) {
             Game.addPickup(Pickup::PT_AMMO, pos());
@@ -104,7 +106,8 @@ void Meteor::collision(std::shared_ptr<GameObject> gameObject,
     // someone friendly on the way?
     if(gameObject->getName() == "Meteor")
     {
-        setShouldBeRemoved(true);
-        gameObject->setShouldBeRemoved(true);
+       // //gameObject->pos().x = col_pos.x;
+       // gameObject->pos().y = col_pos.y;
+       // gameObject->setShouldBeRemoved(true);
     }
 }

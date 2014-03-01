@@ -31,8 +31,9 @@ protected:
     bool hasShield;
     
     int ammo;
-    const int startWithAmmo = 3;
+    const int startWithAmmo = 30;
     
+
 };
 
 #endif /* defined(__SimpleSpaceGame__Player__) */

@@ -11,6 +11,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include "Vec2.h"
 
 struct Drawable
@@ -33,9 +34,38 @@ struct Drawable
     sf::Sprite& operator ()() { return sprite; }
 };
 
+struct Sound
+{
+public:
+    void loadAsMusic(std::string filename) {
+
+         music.openFromFile(filename);
+        music.setVolume(20.0f);
+
+    }
+    void loadAsSound(std::string filename) {
+        buffer.loadFromFile(filename);
+        sound.setBuffer(buffer);
+      
+    }
+    
+    sf::Sound sound;
+    sf::Music music;
+    sf::SoundBuffer buffer;
+    
+    void playAsSound() {
+        sound.play();
+    }
+    
+    void playAsMusic() {
+        music.play();
+    }
+};
+
 class GameObject
 {
 public:
+    void initializeDefault();
     virtual void initialize() = 0;
     virtual void update(float dt) = 0;
     virtual void draw(sf::RenderWindow* renderWindow) = 0;

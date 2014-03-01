@@ -22,6 +22,8 @@ void Player::initialize()
     shouldBeRemoved = false;
     
     ammo = startWithAmmo;
+    
+    
 }
 
 void Player::draw(sf::RenderWindow* renderWindow)

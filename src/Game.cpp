@@ -45,7 +45,18 @@ void CGame::initialize()
         gameObjects.push_back(m);
     }
 
+    for(int i = 0; i < 1; i++)
+    {
+        std::shared_ptr<Enemy> e = std::make_shared<Enemy>();
+        e->initialize();
+        gameObjects.push_back(e);
+    }
+    
     addPickup(Pickup::PICKUP_TYPE::PT_AMMO, Vec2(20.0f, 20.0f));
+    
+    backgroundMusic.loadAsMusic("Sfx/Spacecrusher_0.ogg");
+    shootSound.loadAsSound("Sfx/sfx_laser1.ogg");
+    //backgroundMusic.playAsMusic();
 }
 
 void CGame::addProjectile(Vec2 pos, float rot)
@@ -58,6 +69,7 @@ void CGame::addProjectile(Vec2 pos, float rot)
     projectile->vel().x = sin((3.14f/180.0f)*rot);
     projectile->vel().y = -cos((3.14f/180.0f)*rot);
     
+    shootSound.playAsSound();
     
     gameObjects.push_back(projectile);
 }
@@ -93,6 +105,7 @@ void CGame::update()
                 std::shared_ptr<GameObject> gA = gameObjects[i];
                 std::shared_ptr<GameObject> gB = gameObjects[j];
                 
+                /*
                 if(bbCollision(Vec2(gA->pos().x,
                                     gA->pos().y),
                                Vec2(gA->width(),gA->height()),
@@ -102,6 +115,17 @@ void CGame::update()
                 {
                     gA->collision(gB, gA->pos());
                    // gB->collision(gA, gB->pos());
+                }
+                */
+                if(ppCollision(Vec2(gA->pos().x,
+                                    gA->pos().y),
+                               Vec2(gA->width(),gA->height()),
+                               Vec2(gB->pos().x,
+                                    gB->pos().y),
+                               Vec2(gB->width(),gB->height())))
+                {
+                    gA->collision(gB, gA->pos());
+                    // gB->collision(gA, gB->pos());
                 }
             }
         }
