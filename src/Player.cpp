@@ -23,7 +23,12 @@ void Player::initialize()
     
     ammo = startWithAmmo;
     
+    health = 255;
+    loseSound.loadAsSound("Sfx/sfx_lose.ogg");
     
+    hasMagnet = false;
+    
+    hitSound.loadAsSound("Sfx/sfx_twoTone.ogg");
 }
 
 void Player::draw(sf::RenderWindow* renderWindow)
@@ -55,6 +60,23 @@ void Player::update(float dt)
         is_pressed = false;
     }
 
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && hasMagnet)
+    {
+        std::vector<std::shared_ptr<GameObject>> objs = Game.getNearObjects("Player", 300.0f);
+        
+        for(int i = 0; i < objs.size(); i++)
+        {
+            std::shared_ptr<GameObject> e = Game.getGameObject("Enemy");
+            
+            // velocity to enemy
+            Vec2 vte = Vec2::velocity(objs[i]->pos(), e->pos()).normalized();
+            
+            objs[i]->vel().x = vte.x*1.4f;
+            objs[i]->vel().y = vte.y*1.4f;
+        }
+        
+        hasMagnet = false;
+    }
     
     sf::Vector2i mousePos = sf::Mouse::getPosition(Game.getWindow());
     sf::Vector2f convertedMP = Game.getWindow().mapPixelToCoords(mousePos);
@@ -94,6 +116,20 @@ void Player::update(float dt)
     
     spaceShip().setRotation(rotation);
     shield().setRotation(rotation);
+    
+    spaceShip().setColor(sf::Color(255,255,255,health));
+    
+    if(health < 10) {
+        spaceShip().setColor(sf::Color(255,255,255,10));
+        loseSound.playAsSound();
+        health=1000;
+        Game.setGameState(GS_MENU);
+    }
+    
+    if(health >= 255) {
+        health = 255;
+    }
+    
 }
 
 void Player::collision(std::shared_ptr<GameObject> gameObject,
@@ -107,17 +143,22 @@ void Player::collision(std::shared_ptr<GameObject> gameObject,
         {
             case Pickup::PT_AMMO:
             {
-                ammo += 2;
+                ammo += 3;
             } break;
                 
             case Pickup::PT_HEALTH:
             {
-                
+                health += 40;
             } break;
                 
             case Pickup::PT_SHIELD:
             {
+                hasShield = true;
+            } break;
                 
+            case Pickup::PT_EXTRA:
+            {
+                hasMagnet = true;
             } break;
         }
         
@@ -126,7 +167,38 @@ void Player::collision(std::shared_ptr<GameObject> gameObject,
     
     if(gameObject->getName() == "Meteor")
     {
-        pos().x = col_pos.x;
-        pos().y = col_pos.y;
+      
+    }
+    
+    static int projCount=0;
+    
+    if(gameObject->getName() == "Projectile")
+    {
+        std::shared_ptr<Projectile> projc = std::dynamic_pointer_cast<Projectile>(gameObject);
+        
+        if(projc->getShooter() == "Enemy")
+        {
+            if(!hasShield)
+            {
+                health -= 20;
+                hitSound.playAsSound();
+            }
+            else
+            {
+                projCount ++;
+                
+                // if player has shield, shoot projectile back
+                
+                projc->setShooter("Player");        // set shooter to player, so it takes damage to enemy.
+                projc->vel().x = -projc->vel().x;
+                projc->vel().y = -projc->vel().y;
+                
+                if(projCount >= 3) {
+                    hasShield = false;
+                    projCount = 0;
+                }
+                
+            }
+        }
     }
 }

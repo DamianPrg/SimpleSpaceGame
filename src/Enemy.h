@@ -25,8 +25,10 @@ private:
     Drawable ship;
     sf::Clock shootTimer;
     
-    const float rotSpeed = 50.0f;
+    const float rotSpeed = 60.0f;
+    const float speed    = 100.0f;
     int   health;
+    float accel;
 };
 
 #endif /* defined(__SimpleSpaceGame__Enemy__) */

@@ -20,9 +20,12 @@ public:
     
     void setShooter( std::string s ) { shooter = s; }
     std::string getShooter() { return shooter; }
+    
+    int width() { return projGfx.width(); }
+    int height() { return projGfx.height(); }
 private:
     Drawable projGfx;
-    const float speed = 17.0f;
+    const float speed = 1000.0f;
     std::string shooter;
 };
 

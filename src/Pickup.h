@@ -15,7 +15,7 @@
 class Pickup : public GameObject
 {
 public:
-    enum PICKUP_TYPE { PT_AMMO, PT_SHIELD, PT_HEALTH } pickupType;
+    enum PICKUP_TYPE { PT_AMMO, PT_SHIELD, PT_HEALTH, PT_EXTRA } pickupType;
     
     void initialize();
     void update(float dt);
@@ -32,7 +32,8 @@ private:
     const std::vector<std::string> pickupGfxs = {
         "Gfx/powerupYellow_bolt.png", // PT_AMMO
         "Gfx/powerupYellow_shield.png", // PT_SHIELD
-        "Gfx/pill_green.png" // PT_HEALTH
+        "Gfx/pill_green.png", // PT_HEALTH
+        "Gfx/powerupEXTRA.png" // PT_EXTRA
     };
     
 };

@@ -24,14 +24,19 @@ public:
     int height() { return spaceShip.height(); }
 protected:
     Drawable spaceShip, shield;
+    Sound    loseSound, hitSound;
     
     const float smooth     = 0.03f;// default:0.05f
     const float max_speed  = 7.0f; // default:5.0f
     const float speedApply = 0.6f; // default:0.4f
+    
     bool hasShield;
+    bool hasMagnet;
     
     int ammo;
     const int startWithAmmo = 30;
+    
+    int health;
     
 
 };

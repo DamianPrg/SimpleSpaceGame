@@ -10,6 +10,8 @@
 
 void CGame::initialize()
 {
+    gameObjects.clear();
+    
     std::srand( time(NULL) );
     
     renderWindow.create(sf::VideoMode(1024,780),
@@ -57,7 +59,10 @@ void CGame::initialize()
     backgroundMusic.loadAsMusic("Sfx/Spacecrusher_0.ogg");
     shootSound.loadAsSound("Sfx/sfx_laser1.ogg");
     
+    menuBackground.load("Gfx/MENUBG.PNG");
+    
     //backgroundMusic.playAsMusic();
+    gameState = GS_MENU;
 }
 
 void CGame::addProjectile(Vec2 pos, float rot, std::string shooter)
@@ -87,8 +92,29 @@ void CGame::addPickup(Pickup::PICKUP_TYPE pt, Vec2 pos)
     gameObjects.push_back(pickup);
 }
 
+std::vector<std::shared_ptr<GameObject>> CGame::getNearObjects(std::string n, float max_dist)
+{
+    std::shared_ptr<GameObject> object = getGameObject(n);
+    std::vector<std::shared_ptr<GameObject>> objects;
+    
+    for(int i = 0; i < gameObjects.size(); i++)
+    {
+        if(gameObjects[i] != object) {
+            if(dist(gameObjects[i]->pos(), object->pos()) < max_dist)
+            {
+                objects.push_back(gameObjects[i]);
+            }
+        }
+    }
+    
+    return objects;
+}
+
 void CGame::update()
 {
+    if(gameState == GS_GAME)
+    {
+    
     // look for objects which need to be removed
     for(int i = 0; i < gameObjects.size(); i++)
     {
@@ -149,27 +175,45 @@ void CGame::update()
     {
         gameObjects[i]->update(dt);
     }
+        
+    }
+    else // GAME_STATE
+    {
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            initialize();
+            gameState = GS_GAME;
+        }
+    }
 }
 
 void CGame::draw()
 {
-    // draw background
-    for(int x = -10; x < 10; x++)
+    if(gameState == GS_GAME)
     {
-        for(int y = -10; y < 10; y++)
+        // draw background
+        for(int x = -10; x < 10; x++)
         {
-            float a = x * 256.0f;
-            float b = y * 256.0f;
+            for(int y = -10; y < 10; y++)
+            {
+                float a = x * 256.0f;
+                float b = y * 256.0f;
             
-            background().setPosition(a, b);
-            renderWindow.draw(background());
+                background().setPosition(a, b);
+                renderWindow.draw(background());
+            }
+        }
+    
+        // draw game objects
+        for(int i = 0; i < gameObjects.size(); i++)
+        {
+            gameObjects[i]->draw(&renderWindow);
         }
     }
-    
-    // draw game objects
-    for(int i = 0; i < gameObjects.size(); i++)
+    else
     {
-        gameObjects[i]->draw(&renderWindow);
+        // draw menu background
+        renderWindow.draw(menuBackground());
     }
 }
 

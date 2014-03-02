@@ -74,9 +74,6 @@ void Meteor::update(float dt)
         vel().y = -vel().y;
     }
     
-    
-   // vel().clamp(-5.0f, 5.0f, -5.0f, 5.0f);
-    
 }
 
 void Meteor::collision(std::shared_ptr<GameObject> gameObject,
@@ -100,6 +97,10 @@ void Meteor::collision(std::shared_ptr<GameObject> gameObject,
         
         if(luckyNumber==10) {
             Game.addPickup(Pickup::PT_SHIELD, pos());
+        }
+        
+        if(luckyNumber == 11) {
+            Game.addPickup(Pickup::PT_EXTRA, pos());
         }
     }
     

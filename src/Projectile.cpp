@@ -25,7 +25,13 @@ void Projectile::draw(sf::RenderWindow* renderWindow)
 
 void Projectile::update(float dt)
 {
-    position.move(velocity.x * speed,
-                  velocity.y * speed);
+    position.move(velocity.x * speed * dt,
+                  velocity.y * speed * dt);
+    
     projGfx().setPosition(position.x, position.y);
+    
+    if(pos().x < -2000.0f || pos().x > 2000.0f || pos().y < -2000.0f || pos().y > 2000.0f)
+    {
+        setShouldBeRemoved(true);
+    }
 }

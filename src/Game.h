@@ -29,6 +29,7 @@
 
 // todo: cleanup projectiles, etc..,
 //       fixes, better gameplay.
+enum GAME_STATE { GS_GAME, GS_MENU, GS_OVER };
 
 class CGame
 {
@@ -59,8 +60,14 @@ public:
         return gameObjects[0];
     }
     
+    std::vector<std::shared_ptr<GameObject>> getNearObjects(std::string n, float max_dist);
  
+    void setGameState(GAME_STATE gs) {
+        gameState = gs;
+    }
 private:
+    GAME_STATE gameState;
+    
     sf::RenderWindow renderWindow;
     sf::View         view;
     sf::Clock        clock;
@@ -71,7 +78,7 @@ private:
     std::shared_ptr<Player> player;
     std::shared_ptr<Meteor> meteor;
     
-    Drawable background;
+    Drawable background, menuBackground;
     Sound    backgroundMusic, shootSound;
 };
 

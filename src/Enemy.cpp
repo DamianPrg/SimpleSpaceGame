@@ -22,11 +22,16 @@ void Enemy::initialize()
     health = 255;
     
     rotation=rand()%360;
+    
+    pos().x = -500 + rand() % 1000;
+    pos().y = -500 + rand() % 1000;
+    
+    accel = 0.5f;
 }
 
 void Enemy::update(float dt)
 {
-    if(shootTimer.getElapsedTime().asSeconds() > 1.5f)
+    if(shootTimer.getElapsedTime().asSeconds() > 1.6f)
     {
         shootTimer.restart();
         
@@ -88,7 +93,7 @@ void Enemy::update(float dt)
     
     ship().setRotation(rotation);
     
-    position.move(velocity.x*30.0f*dt, velocity.y*30.0f*dt);
+    position.move(velocity.x*speed*accel*dt, velocity.y*speed*accel*dt);
     
     ship().setPosition(pos().x, pos().y);
     
@@ -104,6 +109,30 @@ void Enemy::update(float dt)
         
         Game.addGameObject(e);
     }
+    
+    if(dist(pos(), Game.getGameObject("Player")->pos()) < 400.0f) {
+        accel = 0.5f;
+    }
+    else {
+        accel = 1.0f;
+    }
+    
+    // get objects
+    std::vector<std::shared_ptr<GameObject>> objs = Game.getNearObjects("Enemy", 200.0f);
+    
+    for(int i = 0; i < objs.size(); i++)
+    {
+        if(objs[i]->getName() == "Projectile")
+        {
+            std::shared_ptr<Projectile> p = std::dynamic_pointer_cast<Projectile>(objs[i]);
+            
+            if(p->getShooter() == "Player")
+            {
+               
+            }
+        }
+    }
+    
 }
 
 void Enemy::draw(sf::RenderWindow* renderWindow)
